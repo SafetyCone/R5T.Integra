@@ -25,9 +25,9 @@ namespace R5T.Integra
                 return false;
             }
 
-            var objAsTypedString = obj as TypedInteger;
+            var objAsTypedInteger = obj as TypedInteger;
 
-            var isEqual = this.Equals_Internal(objAsTypedString);
+            var isEqual = this.Equals_Internal(objAsTypedInteger);
             return isEqual;
         }
 
