@@ -10,6 +10,31 @@ namespace R5T.Integra
     /// </summary>
     public abstract class TypedInteger : IEquatable<TypedInteger>, IComparable<TypedInteger>
     {
+        #region Static
+
+        public static bool operator== (TypedInteger a, TypedInteger b)
+        {
+            if (a is null)
+            {
+                var output = b is null;
+                return output;
+            }
+            else
+            {
+                var output = a.Equals(b);
+                return output;
+            }
+        }
+
+        public static bool operator !=(TypedInteger a, TypedInteger b)
+        {
+            var output = !(a == b);
+            return output;
+        }
+
+        #endregion
+
+
         public int Value { get; }
 
 
@@ -20,18 +45,15 @@ namespace R5T.Integra
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !obj.GetType().Equals(this.GetType()))
-            {
-                return false;
-            }
+            // No type-check required since (obj as TypedString).GetType() will still return the actual type.
 
             var objAsTypedInteger = obj as TypedInteger;
 
-            var isEqual = this.Equals_Internal(objAsTypedInteger);
+            var isEqual = this.Equals_Value(objAsTypedInteger);
             return isEqual;
         }
 
-        protected virtual bool Equals_Internal(TypedInteger other)
+        protected virtual bool Equals_Value(TypedInteger other)
         {
             var isEqual = this.Value.Equals(other.Value);
             return isEqual;
@@ -51,12 +73,13 @@ namespace R5T.Integra
 
         public bool Equals(TypedInteger other)
         {
+            // Required type-check for derived classes using the base class TypedString.Equals(TypedString).
             if (other == null || !other.GetType().Equals(this.GetType()))
             {
                 return false;
             }
 
-            var isEqual = this.Equals_Internal(other);
+            var isEqual = this.Equals_Value(other);
             return isEqual;
         }
 
